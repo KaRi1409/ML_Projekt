@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.WindowsDesktop">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.ML" Version="1.5.4" />
+    <PackageReference Include="Microsoft.ML.ImageAnalytics" Version="1.5.4" />
+    <PackageReference Include="Microsoft.ML.Vision" Version="1.5.4" />
+    <PackageReference Include="OpenCvSharp4.Windows" Version="4.5.1.20201229" />
+    <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="assets\outputs\" />
+  </ItemGroup>
+
+</Project>

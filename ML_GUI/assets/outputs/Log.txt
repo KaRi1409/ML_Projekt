@@ -1,0 +1,16 @@
+************************************************************
+*    Metrics for Multi-class classification model   
+*-----------------------------------------------------------
+    AccuracyMacro = 0, a value between 0 and 1, the closer to 1, the better
+    AccuracyMicro = 0, a value between 0 and 1, the closer to 1, the better
+    LogLoss = 0, the closer to 0, the better
+************************************************************
+Predicting and Evaluation took: 3 seconds
+************************************************************
+*    Metrics for Multi-class classification model. Created at: 10.01.2021 18:06:28   
+*-----------------------------------------------------------
+    AccuracyMacro = 1, a value between 0 and 1, the closer to 1, the better
+    AccuracyMicro = 1, a value between 0 and 1, the closer to 1, the better
+    LogLoss = 0,0232, the closer to 0, the better
+************************************************************
+Predicting and Evaluation took: 15 seconds
