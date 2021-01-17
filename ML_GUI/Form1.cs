@@ -95,7 +95,6 @@ namespace ML_GUI
                     pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
                 }
                 imagePath = pathFolder + pictureName;
-                //pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
             }
             else
             {

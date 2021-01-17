@@ -36,7 +36,7 @@ namespace ML_GUI
                 });
         }
 
-        public static IEnumerable<InMemoryImageData> LoadInMemoryImagesFromDirectory(
+/*        public static IEnumerable<InMemoryImageData> LoadInMemoryImagesFromDirectory(
             string folder,
             bool useFolderNameAsLabel = true)
             => LoadImagesFromDirectory(folder, useFolderNameAsLabel)
@@ -44,6 +44,7 @@ namespace ML_GUI
                     image: File.ReadAllBytes(x.imagePath),
                     label: x.label,
                     imageFileName: Path.GetFileName(x.imagePath)));
+*/
 
         public static string GetAbsolutePath(Assembly assembly, string relativePath)
         {
