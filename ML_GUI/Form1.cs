@@ -14,7 +14,7 @@ namespace ML_GUI
     {
         private string pathFolder = Application.StartupPath + @"\assets\inputs\imagesPrediction\";
         private string imagePath = String.Empty;
-
+        Prediction pred;
         private void CaptureCamera()
         {
             camera = new Thread(new ThreadStart(CaptureCameraCallback));
@@ -78,43 +78,62 @@ namespace ML_GUI
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (isCameraRunning)
+            try
             {
-                pictureBox2.Image = image;
-                pictureBox2.Update();
-
-                string pictureName = "IMG_" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + DateTime.Now.ToString("T").Replace(':', '-') + ".png";
-
-                if (Directory.Exists(pathFolder))
+                if (isCameraRunning)
                 {
-                    pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
+                    pictureBox2.Image = image;
+
+                    pictureBox2.Update();
+
+                    string pictureName = "IMG_" + DateTime.Now.ToString("dd-MM-yyyy") + "_" + DateTime.Now.ToString("T").Replace(':', '-') + ".png";
+
+                    if (Directory.Exists(pathFolder))
+                    {
+                        pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(pathFolder);
+                        pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
+                    }
+                    imagePath = pathFolder + pictureName;
                 }
                 else
                 {
-                    Directory.CreateDirectory(pathFolder);
-                    pictureBox1.Image.Save(pathFolder + pictureName, ImageFormat.Png);
+                    Console.WriteLine("Cannot take picture if the camera isn't capturing image!");
                 }
-                imagePath = pathFolder + pictureName;
-            }
-            else
-            {
-                Console.WriteLine("Cannot take picture if the camera isn't capturing image!");
-            }
+            }                
+                catch
+                {
+                   
+                }
         }
 
         private void button3_Click(object sender, EventArgs e)
         {
-            string result = null;
-            Cursor.Current = Cursors.WaitCursor;
-            Prediction pred = new Prediction(imagePath);
-            Thread thread = new System.Threading.Thread(() => {
-                result = pred.predict();
-            });
-            thread.Start();
-            thread.Join();
-            label3.Text = result;
-            Cursor.Current = Cursors.Default;
-            thread.Interrupt();
+            if (!Training.IsTrained)
+            {
+                label3.Text =  "Cannot predict if the Model is not trained";
+            }
+            else
+            {
+                if (pred == null)
+                {
+                    pred = new Prediction();
+                };
+                string result = null;
+                Cursor.Current = Cursors.WaitCursor;
+                Thread thread = new System.Threading.Thread(() =>
+                {
+                    result = pred.predict(imagePath);
+                });
+                thread.Start();
+                thread.Join();
+                label3.Text = result;
+                Cursor.Current = Cursors.Default;
+                thread.Interrupt();
+            }
         }
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
@@ -180,6 +199,7 @@ namespace ML_GUI
         private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
             Training.train();
+       
         }
 
         private void backgroundWorker1_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

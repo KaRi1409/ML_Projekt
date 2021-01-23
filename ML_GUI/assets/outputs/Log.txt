@@ -14,3 +14,11 @@ Predicting and Evaluation took: 3 seconds
     LogLoss = 0,0232, the closer to 0, the better
 ************************************************************
 Predicting and Evaluation took: 15 seconds
+************************************************************
+*    Metrics for Multi-class classification model. Created at: 23.01.2021 14:01:51   
+*-----------------------------------------------------------
+    AccuracyMacro = 1, a value between 0 and 1, the closer to 1, the better
+    AccuracyMicro = 1, a value between 0 and 1, the closer to 1, the better
+    LogLoss = 0,0234, the closer to 0, the better
+************************************************************
+Predicting and Evaluation took: 23 seconds

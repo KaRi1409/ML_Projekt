@@ -9,9 +9,15 @@ using static Microsoft.ML.Transforms.ValueToKeyMappingEstimator;
 namespace ML_GUI
 {
     class Training
-    {
+    {   
         private static string zipPath = Path.Combine(GetAbsolutePath(@"../../../assets"), "outputs", "imageClassifier.zip");
         private static bool isTrained = false;
+        static MLContext mlContext = new MLContext(seed: 1);
+        const string assetsRelativePath = @"../../../assets";
+        private static string assetsPath = GetAbsolutePath(assetsRelativePath);
+        private static string outputMlNetModelFilePath = Path.Combine(assetsPath, "outputs", "imageClassifier.zip");
+        private static string imagesFolderPathForPredictions = Path.Combine(assetsPath, "inputs", "test-images");
+        private static string fullImagesetFolderPath = Path.Combine(assetsPath, "inputs", "images", "DatasetSmall");
 
         public static bool IsTrained
         {
@@ -29,25 +35,12 @@ namespace ML_GUI
 
         public static void train()
         {
-            var mlContext = new MLContext(seed: 1);
-            const string assetsRelativePath = @"../../../assets";
-            string assetsPath = GetAbsolutePath(assetsRelativePath);
-            string outputMlNetModelFilePath = Path.Combine(assetsPath, "outputs", "imageClassifier.zip");
-            string imagesFolderPathForPredictions = Path.Combine(assetsPath, "inputs", "test-images");
-            string imagesDownloadFolderPath = Path.Combine(assetsPath, "inputs", "images");
 
-            string fullImagesetFolderPath = Path.Combine(imagesDownloadFolderPath, "DatasetSmall");
-
-            // Specify MLContext Filter to only show feedback log/traces about ImageClassification
-            // This is not needed for feedback output if using the explicit MetricsCallback parameter
-            mlContext.Log += FilterMLContextLog;
-
-            // 2. Load the initial full image-set into an IDataView and shuffle so it'll be better balanced
             IEnumerable<ImageData> images = LoadImagesFromDirectory(folder: fullImagesetFolderPath, useFolderNameAsLabel: true);
             IDataView fullImagesDataset = mlContext.Data.LoadFromEnumerable(images);
             IDataView shuffledFullImageFilePathsDataset = mlContext.Data.ShuffleRows(fullImagesDataset);
 
-            // 3. Load Images with in-memory type within the IDataView and Transform Labels to Keys (Categorical)
+            // Load Images with in-memory type within the IDataView and Transform Labels to Keys
             IDataView shuffledFullImagesDataset = mlContext.Transforms.Conversion.
                     MapValueToKey(outputColumnName: "LabelAsKey", inputColumnName: "Label", keyOrdinality: KeyOrdinality.ByValue)
                 .Append(mlContext.Transforms.LoadRawImageBytes(
@@ -57,13 +50,12 @@ namespace ML_GUI
                 .Fit(shuffledFullImageFilePathsDataset)
                 .Transform(shuffledFullImageFilePathsDataset);
 
-            // 4. Split the data 80:20 into train and test sets, train and evaluate.
+            // Split the data 80:20 into train and test sets, train and evaluate.
             var trainTestData = mlContext.Data.TrainTestSplit(shuffledFullImagesDataset, testFraction: 0.2);
             IDataView trainDataView = trainTestData.TrainSet;
             IDataView testDataView = trainTestData.TestSet;
 
-            // 5. Define the model's training pipeline using DNN default values
-
+            // Define the model's training pipeline
             var pipeline = mlContext.MulticlassClassification.Trainers
                     .ImageClassification(featureColumnName: "Image",
                                          labelColumnName: "LabelAsKey",
@@ -71,19 +63,13 @@ namespace ML_GUI
                 .Append(mlContext.Transforms.Conversion.MapKeyToValue(outputColumnName: "PredictedLabel",
                                                                       inputColumnName: "PredictedLabel"));
 
-            // Measuring training time
-            var watch = Stopwatch.StartNew();
-
-            //Train
+            //Train the model
             ITransformer trainedModel = pipeline.Fit(trainDataView);
-
-            watch.Stop();
-            var elapsedMs = watch.ElapsedMilliseconds;
-
-            // 7. Get the quality metrics (accuracy, etc.)
+       
+            // Get the quality metrics (accuracy, etc.) (Log.txt)
             EvaluateModel(mlContext, testDataView, trainedModel);
 
-            // 8. Save the model to assets/outputs (You get ML.NET .zip model file and TensorFlow .pb model file)
+            // Save the model to assets/outputs
             mlContext.Model.Save(trainedModel, trainDataView.Schema, outputMlNetModelFilePath);
         }
 
@@ -95,7 +81,6 @@ namespace ML_GUI
             var predictionsDataView = trainedModel.Transform(testDataset);
 
             var metrics = mlContext.MulticlassClassification.Evaluate(predictionsDataView, labelColumnName: "LabelAsKey", predictedLabelColumnName: "PredictedLabel");
-
             watch.Stop();
             var elapsed2Ms = watch.ElapsedMilliseconds;
 
@@ -108,16 +93,9 @@ namespace ML_GUI
             => FileUtils.LoadImagesFromDirectory(folder, useFolderNameAsLabel)
                 .Select(x => new ImageData(x.imagePath, x.label));
 
-
         public static string GetAbsolutePath(string relativePath)
             => FileUtils.GetAbsolutePath(typeof(Program).Assembly, relativePath);
 
-        private static void FilterMLContextLog(object sender, LoggingEventArgs e)
-        {
-            if (e.Message.StartsWith("[Source=ImageClassificationTrainer;"))
-            {
-                //Console.WriteLine(e.Message);
-            }
-        }
+       
     }
 }
