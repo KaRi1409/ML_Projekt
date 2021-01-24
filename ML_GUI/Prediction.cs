@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Windows.Forms;
 using Microsoft.ML;
 using Microsoft.ML.Data;
 using ML_GUI.DataModels;
@@ -48,11 +49,16 @@ namespace ML_GUI
                 var prediction = predictionEngine.Predict(testImagePredict);
 
                 // Get the highest score and its index
-                var maxScore = prediction.Score.Max();  
-
-                return $"Image Filename : [{testImagePredict.ImageFileName}], " +
-                                  $"Predicted Label : [{prediction.PredictedLabel}], " +
-                                  $"Probability : [{maxScore}] ";
+                var maxScore = prediction.Score.Max();
+                if (maxScore <= 0.89) {
+                    return "No Object detected";
+                }
+                else
+                {
+                  return $"Image Filename : [{testImagePredict.ImageFileName}], " +
+                  $"Predicted Label : [{prediction.PredictedLabel}], " +
+                  $"Probability : [{maxScore}] ";
+                }
             }
             catch (Exception ex)
             {

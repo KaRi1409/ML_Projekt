@@ -14,4 +14,10 @@
     <PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="assets\inputs\imagesPredictions\Square_0a7e6830-2a87-11ea-8123-8363a7ec19e6.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -12,7 +12,7 @@ namespace ML_GUI
 {
     public partial class Form1 : Form
     {
-        private string pathFolder = Application.StartupPath + @"\assets\inputs\imagesPrediction\";
+        private string pathFolder = Application.StartupPath + @"\assets\inputs\imagesPredictions\";
         private string imagePath = String.Empty;
         Prediction pred;
         private void CaptureCamera()
@@ -167,16 +167,22 @@ namespace ML_GUI
                     imagePath = pathFolder + imageName;
 
                     string extension = Path.GetExtension(imagePath);
-
-                    int i = 0;
-                    while (File.Exists(imagePath))
+                    try
                     {
-                        if (i == 0)
-                            imagePath = imagePath.Replace(extension, "(" + ++i + ")" + extension);
-                        else
-                            imagePath = imagePath.Replace("(" + i + ")" + extension, "(" + ++i + ")" + extension);
+                        int i = 0;
+                        while (File.Exists(imagePath))
+                        {
+                            if (i == 0)
+                                imagePath = imagePath.Replace(extension, "(" + ++i + ")" + extension);
+                            else
+                                imagePath = imagePath.Replace("(" + i + ")" + extension, "(" + ++i + ")" + extension);
+                        }
+                        pictureBox2.Image.Save(imagePath, ImageFormat.Png);
                     }
-                    pictureBox2.Image.Save(imagePath, ImageFormat.Png);
+                    catch
+                    {
+                        MessageBox.Show(e.ToString());
+                    }
                 }
             }
         }
