@@ -50,7 +50,7 @@ namespace ML_GUI
 
                 // Get the highest score and its index
                 var maxScore = prediction.Score.Max();
-                if (maxScore <= 0.89) {
+                if (maxScore <= 0.98) {
                     return "No Object detected";
                 }
                 else
