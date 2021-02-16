@@ -30,12 +30,12 @@ namespace ML_GUI
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.start_button = new System.Windows.Forms.Button();
+            this.snapshot_button = new System.Windows.Forms.Button();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.predict_button = new System.Windows.Forms.Button();
+            this.open_file_button = new System.Windows.Forms.Button();
+            this.train_button = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.label1 = new System.Windows.Forms.Label();
@@ -56,27 +56,27 @@ namespace ML_GUI
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
-            // button1
+            // start_button
             // 
-            this.button1.Location = new System.Drawing.Point(511, 88);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(111, 38);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Start";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.start_button.Location = new System.Drawing.Point(511, 88);
+            this.start_button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.start_button.Name = "start_button";
+            this.start_button.Size = new System.Drawing.Size(111, 38);
+            this.start_button.TabIndex = 1;
+            this.start_button.Text = "Start";
+            this.start_button.UseVisualStyleBackColor = true;
+            this.start_button.Click += new System.EventHandler(this.start_button_Click);
             // 
-            // button2
+            // snapshot_button
             // 
-            this.button2.Location = new System.Drawing.Point(511, 250);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(111, 38);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Snapshot";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.snapshot_button.Location = new System.Drawing.Point(511, 250);
+            this.snapshot_button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.snapshot_button.Name = "snapshot_button";
+            this.snapshot_button.Size = new System.Drawing.Size(111, 38);
+            this.snapshot_button.TabIndex = 2;
+            this.snapshot_button.Text = "Snapshot";
+            this.snapshot_button.UseVisualStyleBackColor = true;
+            this.snapshot_button.Click += new System.EventHandler(this.snapshot_button_Click);
             // 
             // pictureBox2
             // 
@@ -89,44 +89,43 @@ namespace ML_GUI
             this.pictureBox2.TabIndex = 3;
             this.pictureBox2.TabStop = false;
             // 
-            // button3
+            // predict_button
             // 
-            this.button3.Location = new System.Drawing.Point(511, 432);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(111, 38);
-            this.button3.TabIndex = 5;
-            this.button3.Text = "Predict";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.predict_button.Location = new System.Drawing.Point(511, 432);
+            this.predict_button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.predict_button.Name = "predict_button";
+            this.predict_button.Size = new System.Drawing.Size(111, 38);
+            this.predict_button.TabIndex = 5;
+            this.predict_button.Text = "Predict";
+            this.predict_button.UseVisualStyleBackColor = true;
+            this.predict_button.Click += new System.EventHandler(this.predict_button_Click);
             // 
-            // button4
+            // open_file_button
             // 
-            this.button4.Location = new System.Drawing.Point(1014, 480);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(111, 38);
-            this.button4.TabIndex = 6;
-            this.button4.Text = "Open File";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.open_file_button.Location = new System.Drawing.Point(1014, 480);
+            this.open_file_button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.open_file_button.Name = "open_file_button";
+            this.open_file_button.Size = new System.Drawing.Size(111, 38);
+            this.open_file_button.TabIndex = 6;
+            this.open_file_button.Text = "Open File";
+            this.open_file_button.UseVisualStyleBackColor = true;
+            this.open_file_button.Click += new System.EventHandler(this.open_file_button_Click);
             // 
-            // button5
+            // train_button
             // 
-            this.button5.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.button5.Location = new System.Drawing.Point(17, 480);
-            this.button5.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(111, 38);
-            this.button5.TabIndex = 7;
-            this.button5.Text = "Train Model";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.train_button.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.train_button.Location = new System.Drawing.Point(17, 480);
+            this.train_button.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.train_button.Name = "train_button";
+            this.train_button.Size = new System.Drawing.Size(111, 38);
+            this.train_button.TabIndex = 7;
+            this.train_button.Text = "Train Model";
+            this.train_button.UseVisualStyleBackColor = true;
+            this.train_button.Click += new System.EventHandler(this.train_button_Click);
             // 
             // backgroundWorker1
             // 
             this.backgroundWorker1.WorkerReportsProgress = true;
-            this.backgroundWorker1.WorkerSupportsCancellation = false;
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             this.backgroundWorker1.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker1_RunWorkerCompleted);
             // 
@@ -180,12 +179,12 @@ namespace ML_GUI
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.progressBar1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
+            this.Controls.Add(this.train_button);
+            this.Controls.Add(this.open_file_button);
+            this.Controls.Add(this.predict_button);
             this.Controls.Add(this.pictureBox2);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.snapshot_button);
+            this.Controls.Add(this.start_button);
             this.Controls.Add(this.pictureBox1);
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.MaximumSize = new System.Drawing.Size(1156, 656);
@@ -203,12 +202,12 @@ namespace ML_GUI
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button start_button;
+        private System.Windows.Forms.Button snapshot_button;
         private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button predict_button;
+        private System.Windows.Forms.Button open_file_button;
+        private System.Windows.Forms.Button train_button;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label label1;

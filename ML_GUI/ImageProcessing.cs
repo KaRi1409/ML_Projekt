@@ -16,7 +16,7 @@ namespace ML_GUI
     class ImageProcessing
     {
         /**https://softwarebydefault.com/2013/05/18/image-median-filter/
-         * Bei der ImageProcessing Klasse haben wir uns dazu entschiden die Median Filter zu benutzen, dieser wurde auf basis von dem Oben refenzierten Code Beispiel
+         * Bei der ImageProcessing Klasse haben wir uns dazu entschiden die Median Filter zu benutzen, dieser wurde auf basis von dem oben refenzierten Code Beispiel
          * erstellt.
          * Zugriffsdatum 12.02.2021
          * 

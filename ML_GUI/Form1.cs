@@ -15,11 +15,11 @@ namespace ML_GUI
         private string pathFolder = Application.StartupPath + @"\assets\inputs\imagesPredictions\";
         private string imagePath = String.Empty;
         Prediction pred;
-        VideoCapture capture;
-        Mat frame;
-        Bitmap image;
-        private Thread camera;
-        bool isCameraRunning = false;
+        VideoCapture videoCapture;
+        Mat pixelMat;
+        Bitmap bitmapImage;
+        private Thread cameraThread;
+        bool isCameraON = false;
 
         public Form1()
         {
@@ -27,58 +27,59 @@ namespace ML_GUI
         }
         private void CaptureCamera()
         {
-            camera = new Thread(new ThreadStart(CaptureCameraCallback));
-            camera.Start();
+            cameraThread = new Thread(new ThreadStart(StartCamera));
+            cameraThread.Start();
         }
 
-        private void CaptureCameraCallback()
+        private void StartCamera()
         {
-            frame = new Mat();
-            capture = new VideoCapture(0);
-            capture.Open(0);
+            pixelMat = new Mat();
+            videoCapture = new VideoCapture(0);
+            videoCapture.Open(0);
 
-            if (capture.IsOpened())
+            if (videoCapture.IsOpened())
             {
-                while (isCameraRunning)
+                while (isCameraON)
                 {
                     try
                     {
-                        if (frame != null)
+                        if (pixelMat != null)
                         {
-                            capture.Read(frame);
-
-                            image = BitmapConverter.ToBitmap(frame);
+                            videoCapture.Read(pixelMat);
+                            bitmapImage = BitmapConverter.ToBitmap(pixelMat);
                             if (pictureBox1.Image != null)
                             {
                                 pictureBox1.Image.Dispose();
                             }
-                            if (image != null)
-                                pictureBox1.Image = image;
+                            if (bitmapImage != null)
+                                pictureBox1.Image = bitmapImage;
                         }
                     }
-                    catch { }
+                    catch
+                    { 
+                    }
                 }
             }
         }
 
     
 
-        private void button1_Click(object sender, EventArgs e)
+        private void start_button_Click(object sender, EventArgs e)
         {
             try
             {
-                if (button1.Text.Equals("Start"))
+                if (start_button.Text.Equals("Start"))
                 {
                     CaptureCamera();
-                    button1.Text = "Stop";
-                    isCameraRunning = true;
+                    start_button.Text = "Stop";
+                    isCameraON = true;
                 }
                 else
                 {
-                    capture.Release();
-                    button1.Text = "Start";
-                    isCameraRunning = false;
-                    camera.Interrupt();
+                    videoCapture.Release();
+                    start_button.Text = "Start";
+                    isCameraON = false;
+                    cameraThread.Interrupt();
                 }
             }
             catch
@@ -87,25 +88,25 @@ namespace ML_GUI
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void snapshot_button_Click(object sender, EventArgs e)
         {
             try
             {
-                if (isCameraRunning)
+                if (isCameraON)
                 {
                     if (pictureBox2.InvokeRequired)
                     {
                         pictureBox2.Invoke(new MethodInvoker(
                         delegate ()
                         {
-                            pictureBox2.Image = image;
+                            pictureBox2.Image = bitmapImage;
 
                             pictureBox2.Update();
                         }));
                     }
                     else
                     {
-                        Bitmap bitmap = new Bitmap(image);
+                        Bitmap bitmap = new Bitmap(bitmapImage);
                         pictureBox2.Image =bitmap;
                         try {
                             pictureBox2.Update();
@@ -139,7 +140,7 @@ namespace ML_GUI
 
             }
         }
-        private void button3_Click(object sender, EventArgs e)
+        private void predict_button_Click(object sender, EventArgs e)
         {
             if (!Training.IsTrained)
             {
@@ -164,20 +165,20 @@ namespace ML_GUI
 
         private void Form1_FormClosed(object sender, FormClosedEventArgs e)
         {
-            if (capture != null)
+            if (videoCapture != null)
             {
-                capture.Release();
-                capture.Dispose();
+                videoCapture.Release();
+                videoCapture.Dispose();
             }
-            isCameraRunning = false;
-            if (camera != null)
+            isCameraON = false;
+            if (cameraThread != null)
             {
-                camera.Interrupt();
+                cameraThread.Interrupt();
             }
             Application.Exit();
         }
        
-        private void button4_Click(object sender, EventArgs e)
+        private void open_file_button_Click(object sender, EventArgs e)
         {
             using OpenFileDialog ofd = new OpenFileDialog();
             ofd.Reset();
@@ -234,7 +235,7 @@ namespace ML_GUI
             }
          
         }
-        private void button5_Click(object sender, EventArgs e)
+        private void train_button_Click(object sender, EventArgs e)
         {
             if (Training.IsTrained)
             {
@@ -242,7 +243,7 @@ namespace ML_GUI
             }
             else
             {
-                button5.Enabled = false;
+                train_button.Enabled = false;
                 progressBar1.Visible = true;
                 progressBar1.Style = ProgressBarStyle.Marquee;
                 progressBar1.MarqueeAnimationSpeed = 50;
@@ -260,9 +261,11 @@ namespace ML_GUI
             progressBar1.Style = ProgressBarStyle.Continuous;
             progressBar1.MarqueeAnimationSpeed = 0;
             progressBar1.Visible = false;
-            button5.Enabled = true;
+            train_button.Enabled = true;
             Training.IsTrained = true;
             MessageBox.Show("Done");
         }
+
+       
     }
 }
