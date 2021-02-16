@@ -43,14 +43,14 @@ namespace ML_GUI
             {
                 //get Image for prediction
                 string[] imageName = imagePath.Split('\\');
-                 var testImagePredict = new InMemoryImageData(File.ReadAllBytes(imagePath), "", imageName[imageName.Length-1]);
+                var testImagePredict = new InMemoryImageData(File.ReadAllBytes(imagePath), "", imageName[imageName.Length-1]);
                
                 //single prediction
                 var prediction = predictionEngine.Predict(testImagePredict);
 
                 // Get the highest score and its index
                 var maxScore = prediction.Score.Max();
-              if (maxScore <= 0.95) {
+              if (maxScore <= 0.70) {
                     return "No Object detected";
                 }
                 else
